@@ -6,7 +6,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class TestHomework {
+public class PricingTest {
     String driverPath = "/Users/annapoghosyann/Downloads/chromedriver";
     WebDriver driver;
 
@@ -26,10 +26,8 @@ public class TestHomework {
 
         WebElement goldTitle = driver.findElement(By.cssSelector(".gold-pricing-title"));
         String goldTitleText = goldTitle.getText();
-        boolean hint=false;
-        if (goldTitleText.equals("Try PicsArt Gold Free for 7-Days"))
-            hint=true;
-        System.out.println(hint);
+
+        System.out.println(goldTitleText.equals("Try PicsArt Gold Free for 7-Days"));
     }
 
     @AfterMethod

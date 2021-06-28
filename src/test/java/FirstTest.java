@@ -17,6 +17,7 @@ public class FirstTest {
     @Test
     public void myFirstTest() {
         driver.get("https://picsart.com/");
+
         WebElement element = driver.findElement(By.cssSelector(".home-title-0-2-6"));
         String text = element.getText();
         System.out.println(text);
