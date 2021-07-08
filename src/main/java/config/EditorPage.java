@@ -15,6 +15,8 @@ public class EditorPage {
         WebElement photosCategory = DriverUtils.driver.findElement(By.cssSelector("[id=\"photos-category\"]"));
         wait.until(ExpectedConditions.visibilityOf(photosCategory)).click();
 
+
+        System.out.println("Anna");
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("[class*='pa-uiLib-sidebar-sidebarItem']"))).click();
 
 
