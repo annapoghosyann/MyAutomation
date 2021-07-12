@@ -1,4 +1,8 @@
+import config.CreatePage;
+import config.DriverUtils;
+import config.HomePage;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -11,35 +15,35 @@ import org.testng.annotations.Test;
 import java.util.concurrent.TimeUnit;
 
 public class LoginTest {
-    String driverPath = "/Users/annapoghosyann/Downloads/chromedriver";
-    WebDriver driver;
 
     @BeforeMethod
-    public void initDriver() {
-        System.setProperty("webdriver.chrome.driver", driverPath);
-        driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(25, TimeUnit.SECONDS);
+    public void initDriver(){
+        DriverUtils.initDriver();
+        HomePage homePage = new HomePage();
+        homePage.openPage();
+        DriverUtils.driver.manage().addCookie(new Cookie("we_experiment_create_page_variant","0"));
     }
 
     @Test
     public void checkLogin() throws InterruptedException {
-        driver.get("https://picsartstage2.com/");
+        CreatePage createPage = new CreatePage();
+        createPage.openPage();
 
-        WebElement loginMainButton = driver.findElement(By.cssSelector("[href=\"/sign-in\"]"));
+        WebElement loginMainButton = DriverUtils.driver.findElement(By.cssSelector("[href=\"/sign-in\"]"));
         loginMainButton.click();
 
-        WebElement loginField = driver.findElement(By.cssSelector("[class=pa-uiLib-inputWrapper] [name='username']"));
+        WebElement loginField = DriverUtils.driver.findElement(By.cssSelector("[class=pa-uiLib-inputWrapper] [name='username']"));
         loginField.sendKeys("repbea");
 
-        WebElement passwordField = driver.findElement(By.cssSelector("[class=pa-uiLib-inputWrapper] [name='password']"));
+        WebElement passwordField = DriverUtils.driver.findElement(By.cssSelector("[class=pa-uiLib-inputWrapper] [name='password']"));
         passwordField.sendKeys("123457");
 
-        WebElement loginButton = driver.findElement(By.cssSelector("[class=\"pa-uiLib-authentication-btn primary pa-uiLib-authentication-signIn\"]"));
+        WebElement loginButton = DriverUtils.driver.findElement(By.cssSelector("[class=\"pa-uiLib-authentication-btn primary pa-uiLib-authentication-signIn\"]"));
         loginButton.click();
 
-        WebElement accountPhoto = driver.findElement(By.cssSelector("[class*=\"placeholder image-main\"]"));
+        WebElement accountPhoto = DriverUtils.driver.findElement(By.cssSelector("[class*=\"placeholder image-main\"]"));
 
-        WebDriverWait webDriverWait = new WebDriverWait(driver, 30);
+        WebDriverWait webDriverWait = new WebDriverWait(DriverUtils.driver, 30);
         webDriverWait.until(ExpectedConditions.visibilityOf(accountPhoto));
 //        Thread.sleep(5000);
         System.out.println(accountPhoto.isDisplayed());
@@ -47,8 +51,7 @@ public class LoginTest {
     }
 
     @AfterMethod
-    public void kill() {
-        driver.close();
-        driver.quit();
+    public void killDriver() throws InterruptedException {
+        DriverUtils.killDriver();
     }
 }

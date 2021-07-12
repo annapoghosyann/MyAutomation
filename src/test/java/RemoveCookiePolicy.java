@@ -1,3 +1,6 @@
+import config.CreatePage;
+import config.DriverUtils;
+import config.HomePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
@@ -8,28 +11,27 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class RemoveCookiePolicy {
-    String driverPath = "/Users/annapoghosyann/Downloads/chromedriver";
-    WebDriver driver;
 
     @BeforeMethod
     public void initDriver(){
-        System.setProperty("webdriver.chrome.driver", driverPath);
-        driver = new ChromeDriver();
+        DriverUtils.initDriver();
+        HomePage homePage = new HomePage();
+        homePage.openPage();
+        DriverUtils.driver.manage().addCookie(new Cookie("we_experiment_create_page_variant","0"));
     }
 
     @Test
     public void myFirstTest() {
-        driver.get("https://picsartstage2.com/");
+        CreatePage createPage = new CreatePage();
+        createPage.openPage();
 
-        driver.manage().addCookie(new Cookie("OptanonAlertBoxClosed","2021-06-28T11:19:39.118Z"));
-
-        driver.navigate().refresh();
+        DriverUtils.driver.manage().addCookie(new Cookie("OptanonAlertBoxClosed","2021-06-28T11:19:39.118Z"));
+        DriverUtils.driver.navigate().refresh();
 
     }
 
     @AfterMethod
-    public void kill(){
-        driver.close();
-        driver.quit();
+    public void killDriver() throws InterruptedException {
+        DriverUtils.killDriver();
     }
 }
