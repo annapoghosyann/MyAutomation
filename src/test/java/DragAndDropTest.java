@@ -1,3 +1,6 @@
+import config.CreatePage;
+import config.DriverUtils;
+import config.HomePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
@@ -13,57 +16,57 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 public class DragAndDropTest {
-    String driverPath = "/Users/annapoghosyann/Downloads/chromedriver";
-    WebDriver driver;
 
     @BeforeMethod
     public void initDriver(){
-        System.setProperty("webdriver.chrome.driver", driverPath);
-        driver = new ChromeDriver();
+        DriverUtils.initDriver();
+        HomePage homePage = new HomePage();
+        homePage.openPage();
+        DriverUtils.driver.manage().addCookie(new Cookie("we_experiment_create_page_variant","0"));
     }
 
     @Test
     public void myFirstTest() throws InterruptedException{
-        driver.get("https://picsartstage2.com/create");
-        WebDriverWait wait = new WebDriverWait(driver,50);
+        CreatePage createPage = new CreatePage();
+        createPage.openPage();
 
-        WebElement instaStoryButton = driver.findElement(By.cssSelector("[class*=\"pwCreateDesignContainer\"][data-test='insta-story']"));
+        WebDriverWait wait = new WebDriverWait(DriverUtils.driver,50);
+
+        WebElement instaStoryButton = DriverUtils.driver.findElement(By.cssSelector("[class*=\"pwCreateDesignContainer\"][data-test='insta-story']"));
         wait.until(ExpectedConditions.visibilityOf(instaStoryButton));
-        new Actions(driver).moveToElement(instaStoryButton).click().build().perform();
+        new Actions(DriverUtils.driver).moveToElement(instaStoryButton).click().build().perform();
 
-        String s = new ArrayList<>(driver.getWindowHandles()).get(1);
-        driver.switchTo().window(s);
+        String s = new ArrayList<>(DriverUtils.driver.getWindowHandles()).get(1);
+        DriverUtils.driver.switchTo().window(s);
         cookiePolicy();
-        driver.navigate().refresh();
+        DriverUtils.driver.navigate().refresh();
 
-        WebElement photosCategory = driver.findElement(By.cssSelector("[id=\"photos-category\"]"));
+        WebElement photosCategory = DriverUtils.driver.findElement(By.cssSelector("[id=\"photos-category\"]"));
         wait.until(ExpectedConditions.visibilityOf(photosCategory)).click();
 
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("[class*='pa-uiLib-sidebar-sidebarItem']"))).click();
 
 
         Thread.sleep(10000);
-        WebElement chosenPhoto = driver.findElement(By.cssSelector("[data-test=\"canvas-container\"]"));
+        WebElement chosenPhoto = DriverUtils.driver.findElement(By.cssSelector("[data-test=\"canvas-container\"]"));
 //        chosenPhoto.click();
-        new Actions(driver).moveToElement(chosenPhoto).click().build().perform();
+        new Actions(DriverUtils.driver).moveToElement(chosenPhoto).click().build().perform();
 
-        new Actions(driver).dragAndDropBy(chosenPhoto, 10, 20).perform();
+        new Actions(DriverUtils.driver).dragAndDropBy(chosenPhoto, 10, 20).perform();
 
         }
 
         public void cookiePolicy() {
-        driver.manage().addCookie(new Cookie("user_key", "b6409bcb-3cc8-4644-9eb4-897da417ca2d"));
-        driver.manage().addCookie(new Cookie("we-editor-first-open", "true"));
-        driver.manage().addCookie(new Cookie("OptanonAlertBoxClosed", "2021-06-26T13:47:26.654Z"));
-        driver.manage().addCookie(new Cookie("we-editor-photo-first-open", "true"));
-        driver.navigate().refresh();
+            DriverUtils.driver.manage().addCookie(new Cookie("user_key", "b6409bcb-3cc8-4644-9eb4-897da417ca2d"));
+            DriverUtils.driver.manage().addCookie(new Cookie("we-editor-first-open", "true"));
+            DriverUtils.driver.manage().addCookie(new Cookie("OptanonAlertBoxClosed", "2021-06-26T13:47:26.654Z"));
+            DriverUtils.driver.manage().addCookie(new Cookie("we-editor-photo-first-open", "true"));
+            DriverUtils.driver.navigate().refresh();
     }
 
 
     @AfterMethod
-    public void kill() throws InterruptedException {
-        Thread.sleep(7000);
-        driver.close();
-        driver.quit();
+    public void killDriver() throws InterruptedException {
+        DriverUtils.killDriver();
     }
 }

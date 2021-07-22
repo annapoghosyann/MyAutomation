@@ -1,16 +1,16 @@
-import config.CreatePage;
 import config.DriverUtils;
+import config.CreatePage;
 import config.HomePage;
+import config.TestListener;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import java.util.concurrent.TimeUnit;
 
-
-public class RefreshLogin {
+@Listeners({TestListener.class})
+public class CreatePageTest {
 
     @BeforeMethod
     public void initDriver(){
@@ -21,12 +21,10 @@ public class RefreshLogin {
     }
 
     @Test
-    public void checkLogin() {
+    public void check (){
         CreatePage createPage = new CreatePage();
         createPage.openPage();
-
-        DriverUtils.driver.manage().addCookie(new Cookie("user_key", "b6409bcb-3cc8-4644-9eb4-897da417ca2d"));
-        DriverUtils.driver.navigate().refresh();
+        createPage.clickNewProjectButton();
     }
 
     @AfterMethod

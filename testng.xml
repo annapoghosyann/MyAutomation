@@ -2,8 +2,10 @@
 <suite name="name">
     <test name="My Test">
         <classes>
-            <class name="FirstTest"></class>
+            <class name="CreatePageTest"></class>
         </classes>
     </test>
-
+    <listeners>
+        <listener class-name="config.TestListener"></listener>
+    </listeners>
 </suite>
